@@ -44,10 +44,12 @@ exports.create = function (req, res, next) {
   student.save(function (err) {
     if (err) {
       // Call the next middleware with an error message
-      return next(err);
+      return res.status(400).send({
+        message: getErrorMessage(err)
+      });
     } else {
       // Use the 'response' object to send a JSON response
-      res.json(student);
+      res.status(200).json(student);
     }
   });
 };
@@ -58,10 +60,12 @@ exports.list = function (req, res, next) {
   Student.find({}, (err, students) => {
     if (err) {
       // Call the next middleware with an error message
-      return next(err);
+      return res.status(400).send({
+        message: getErrorMessage(err)
+      });
     } else {
       // Use the 'response' object to send a JSON response
-      res.json(students);
+      res.status(200).json(students);
     }
   });
 };

@@ -6,7 +6,7 @@ const students = require('../../app/controllers/students.server.controller');
 // Define the routes module method
 module.exports = function(app) {
     app.get('/students', students.requiresLogin, students.list);
-    app.post('/', students.create);
+    app.post('/student', students.create);
 
     // Set up the 'signin' routes 
 	app.post('/signin', students.authenticate);
