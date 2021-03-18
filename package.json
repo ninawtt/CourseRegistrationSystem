@@ -1,0 +1,33 @@
+{
+  "name": "TzuTingWu_COMP308Lab3",
+  "version": "1.0.0",
+  "description": "COMP308 Lab2 - Designing and implementing a complete web app using MERN stack",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server",
+    "dev": "nodemon server"
+  },
+  "keywords": [],
+  "author": {
+    "name": "Tzu-Ting Wu",
+    "email": "twu42@my.centennialcollege.ca"
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  },
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "body-parser": "^1.19.0",
+    "compression": "^1.7.4",
+    "cookie-parser": "^1.4.4",
+    "cors": "^2.8.5",
+    "ejs": "^3.0.1",
+    "express": "^4.17.1",
+    "express-session": "^1.17.0",
+    "jsonwebtoken": "^8.5.1",
+    "method-override": "^2.3.10",
+    "mongoose": "^5.11.19",
+    "morgan": "^1.9.1"
+  }
+}
