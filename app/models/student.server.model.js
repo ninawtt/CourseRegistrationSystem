@@ -34,7 +34,7 @@ const StudentSchema = new Schema({
     },
     program: String,
     // using the ref to reference another document
-    course: [{
+    courses: [{
         type: Schema.Types.ObjectId,
         ref: 'Course'
     }]

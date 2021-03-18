@@ -46,3 +46,63 @@ exports.list = function (req, res, next) {
       }
     });
 };
+
+exports.register = function(req, res, next) {
+    console.log('in register:', req.body);
+  
+    const courses = req.body.courses;
+    var coursesObjectIds = [];
+    
+    courses.forEach(course => {
+      coursesObjectIds.push(mongoose.Types.ObjectId(course));
+    });
+  
+    console.log('coursesObjectIds: ', coursesObjectIds)
+  
+    const student = req.student;
+    student.courses = courses;
+    
+    console.log('student: ', student);
+    Student.findByIdAndUpdate({_id: student._id}, student, {new: true}, 
+      function (err, updatedStudent) { // use {new: true} to return updated doc
+        if (err) {
+          return res.status(400).send({
+              message: getErrorMessage(err)
+          });
+        }
+        res.status(200).json(updatedStudent);
+    });
+};
+
+exports.dropCourse = function(req, res, next) {
+    console.log('in dropCourse:', req.body);
+  
+    const courseToBeDropped = req.body.course;
+    console.log('courseToBeDropped', courseToBeDropped);
+    const courses = req.student.courses;
+    console.log('original courses', courses);
+
+    const index = courses.indexOf(courseToBeDropped);
+    console.log(index);
+    if (index > -1) {
+        courses.splice(index, 1);
+    }
+
+    console.log('courses: ', courses)
+  
+    const student = req.student;
+    student.courses = courses;
+    
+    console.log('student: ', student);
+    Student.findByIdAndUpdate({_id: student._id}, student, {new: true}, 
+      function (err, updatedStudent) { // use {new: true} to return updated doc
+        if (err) {
+          return res.status(400).send({
+              message: getErrorMessage(err)
+          });
+        }
+        res.status(200).json(updatedStudent);
+    });
+};
+
+  

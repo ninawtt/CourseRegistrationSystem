@@ -1,5 +1,5 @@
-// Load the 'Student' Mongoose model
-const Student = require("mongoose").model("Student");
+const mongoose = require('mongoose');
+const Student = mongoose.model("Student");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const config = require("../../config/config");
@@ -141,6 +141,30 @@ exports.authenticate = function(req, res, next) {
 		}
 		
 	});
+};
+
+// 'studentByID' controller method to find a student by its id
+exports.studentByID = function (req, res, next, id) {
+	// Use the 'Student' static 'findOne' method to retrieve a specific student
+	Student.findOne({
+        _id: id
+	}, (err, student) => {
+		if (err) {
+			// Call the next middleware with an error message
+			return next(err);
+		} else {
+			// Set the 'req.student' property
+      req.student = student;
+      console.log(student);
+			// Call the next middleware
+			next();
+		}
+	});
+};
+
+exports.read = function(req, res) {
+	// Use the 'response' object to send a JSON response
+	res.status(200).json(req.student);
 };
 
 // // Create a new controller method that creates new 'regular' student
