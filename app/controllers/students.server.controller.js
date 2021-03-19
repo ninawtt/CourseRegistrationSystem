@@ -143,11 +143,11 @@ exports.authenticate = function(req, res, next) {
 	});
 };
 
-// 'studentByID' controller method to find a student by its id
-exports.studentByID = function (req, res, next, id) {
+// 'studentByStudentNumber' controller method to find a student by its studentNumber
+exports.studentByStudentNumber = function (req, res, next, studentNumber) {
 	// Use the 'Student' static 'findOne' method to retrieve a specific student
 	Student.findOne({
-        _id: id
+    studentNumber: studentNumber
 	}, (err, student) => {
 		if (err) {
 			// Call the next middleware with an error message
@@ -167,71 +167,17 @@ exports.read = function(req, res) {
 	res.status(200).json(req.student);
 };
 
-// // Create a new controller method that creates new 'regular' student
-// exports.signup = function (req, res, next) {
-//   // If student is not connected, create and login a new student, otherwise redirect the student back to the main application page
-//   if (!req.user) {
-//     // Create a new 'Student' model instance
-//     const student = new Student(req.body);
-//     console.log(req.body);
-//     const message = null;
-
-//     // Set the student provider property
-//     student.provider = "local";
-
-//     // Try saving the new user document
-//     student.save((err) => {
-//       // If an error occurs, use flash messages to report the error
-//       if (err) {
-//         // Use the error handling method to get the error message
-//         const message = getErrorMessage(err);
-//         console.log(err);
-//         // save the error in flash
-//         req.flash("error", message); //save the error into flash memory
-
-//         // Redirect the student back to the signup page
-//         return res.redirect("/signup");
-//       }
-
-//       // If the student was created successfully use the Passport 'login' method to login
-//       req.login(student, (err) => {
-//         // If a login error occurs move to the next middleware
-//         if (err) return next(err);
-
-//         // Redirect the student to the comment page
-//         return res.redirect("/comment");
-//       });
-//     });
-//   } else {
-//     return res.redirect("/");
-//   }
-// };
-
-// // Create a new controller method that renders the signin page
-// exports.renderSignin = function (req, res, next) {
-//   // If student is not connected render the signin page, otherwise redirect the user back to the main application page
-//   if (!req.user) {
-//     // Use the 'response' object to render the signin page
-//     res.render("signin", {
-//       // Set the page title variable
-//       title: "Sign In",
-//       // Set the flash message variable
-//       messages: req.flash("error") || req.flash("info"),
-//     });
-//   } else {
-//     return res.redirect("/comment");
-//   }
-// };
-
-// exports.showReadStudentPage = function (req, res) {
-//   res.render("read_student", { messages: req.flash("error") });
-// };
-
-// // Create a new controller method for logout
-// exports.logout = function (req, res) {
-//   // Use the Passport 'logout' method to logout
-//   req.logout();
-
-//   // Redirect the user back to the main application page
-//   res.redirect("/");
-// };
+exports.coursesList = function (req, res) {
+  Student.findOne({ _id: req.student._id })
+         .populate('courses')
+         .exec(function(err, student) {
+            if (err) {
+              return res.status(400).send({
+                message: getErrorMessage(err)
+              });
+            } else {
+              console.log(student);
+              res.status(200).json(student.courses);
+            }
+		      });
+};
