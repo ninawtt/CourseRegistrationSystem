@@ -1,13 +1,12 @@
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
-import ListGroup from 'react-bootstrap/ListGroup';
 import Spinner from 'react-bootstrap/Spinner';
 import { withRouter } from 'react-router-dom';
 import Login from './Login';
 import AppContext from './AppContext';
 
 function ListStudents(props) {
-  const { loginStudentId } = useContext(AppContext); 
+  const { loginStudentNumber } = useContext(AppContext); 
   const [allStudents, setAllStudents] = useState([]);
   const [showLoading, setShowLoading] = useState(true);
 
@@ -43,11 +42,12 @@ function ListStudents(props) {
   return (
     <div>
       { allStudents.length !== 0
-        ? <div>
+        ? <div class="text-center">
           {showLoading && <Spinner animation="border" role="status">
             <span className="sr-only">Loading...</span>
           </Spinner> }
-          <table striped bordered hover>
+          <h1 class="mt-3">All Students</h1>
+          <table class="table table-striped center text-center bordered hover mt-3">
             <thead>
               <tr>
                 <th>Student Number</th>
@@ -64,7 +64,7 @@ function ListStudents(props) {
                 <td>{item.firstName}</td>
                 <td>{item.lastName}</td>
                 <td>{item.program}</td>
-                <td><button onClick={() => showStudentDetail(item.studentNumber)}>View Details</button></td>
+                <td><button class="btn btn-info" onClick={() => showStudentDetail(item.studentNumber)}>View Details</button></td>
               </tr>
             ))}
             </tbody>

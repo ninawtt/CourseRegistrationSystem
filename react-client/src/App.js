@@ -1,10 +1,11 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   Link,
-  Redirect
+  Redirect,
+  useHistory
 } from "react-router-dom";
 //
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -22,35 +23,34 @@ import ListStudents from './components/ListStudents';
 import ShowStudent from './components/ShowStudent';
 import ShowCourse from './components/ShowCourse';
 import Logout from './components/Logout';
+import Home from './components/Home';
 //
 function App() {
-  const [loginStudentId, setLoginStudentId] = useState("auth");
-  
+  const [loginStudentNumber, setLoginStudentNumber] = useState("auth");
+
   return (
-    <AppContext.Provider value={{loginStudentId, setLoginStudentId}}>
+    <AppContext.Provider value={{loginStudentNumber, setLoginStudentNumber}}>
       <ToastContainer />
       <Router>
-        <Navbar bg="light" expand="lg">
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="mr-auto">
-              <Link to="/home">Home</Link>
-              { loginStudentId !== "auth" && <>
-                <Link to="/courses">Courses</Link>
-                <Link to="/students">Students</Link>
-                <Link to="/myCourses/list">My Courses</Link>
-                <Link to="/logout">Logout</Link>
-              </>}
-              { loginStudentId === "auth" && 
-                <Link to="/login">Login</Link>
-              }
-              <Link to="/create">Sign Up</Link>
-            </Nav>
-          </Navbar.Collapse>
+        <Navbar bg="dark" variant="dark justify-content-center" >
+          <Nav className="justify-content-center">
+            <Link className="nav-link" to="/home">Home</Link>
+            { loginStudentNumber !== "auth" && <>
+              <Link className="nav-link" to="/courses">Courses</Link>
+              <Link className="nav-link" to="/students">Students</Link>
+              <Link className="nav-link" to="/myCourses/list">My Courses</Link>
+              <Link className="nav-link" to="/logout">Logout</Link>
+            </>}
+            { loginStudentNumber === "auth" && 
+              <Link className="nav-link" to="/login">Login</Link>
+            }
+            <Link className="nav-link" to="/create">Sign Up</Link>
+          </Nav>
         </Navbar>
       
-        <div>          
-            <Route render ={()=> <div>HOME</div>} path="/home" />
+        <div>     
+            <Redirect exact from="/" to="/home" />
+            <Route render ={()=> <Home />} path="/home" />
             <Route render ={()=> <Login />} path="/login" />
             <Route render ={()=> <SignUp />} path="/create" />
             <Route render ={()=> <ListCourses />} path="/courses" />

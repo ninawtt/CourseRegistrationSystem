@@ -143,6 +143,44 @@ exports.authenticate = function(req, res, next) {
 	});
 };
 
+//check if the student is signed in
+exports.isSignedIn = (req, res) => {
+	// Obtain the session token from the requests cookies,
+	// which come with every request
+	const token = req.cookies.token
+	console.log(token)
+	// if the cookie is not set, return 'auth'
+	if (!token) {
+	  return res.send({ screen: 'auth' }).end();
+	}
+	var payload;
+	try {
+	  // Parse the JWT string and store the result in `payload`.
+	  // Note that we are passing the key in this method as well. This method will throw an error
+	  // if the token is invalid (if it has expired according to the expiry time we set on sign in),
+	  // or if the signature does not match
+	  payload = jwt.verify(token, jwtKey)
+	} catch (e) {
+	  if (e instanceof jwt.JsonWebTokenError) {
+		// the JWT is unauthorized, return a 401 error
+		return res.status(401).end()
+	  }
+	  // otherwise, return a bad request error
+	  return res.status(400).end()
+	}
+  
+	// Finally, token is ok, return the username given in the token
+	res.status(200).send({ screen: payload.studentNumber });
+}
+
+//deletes the token on the client side by clearing the cookie named 'token'
+exports.signout = (req, res) => {
+	res.clearCookie("token")
+	return res.status('200').json({message: "signed out"})
+	// Redirect the user back to the main application page
+	//res.redirect('/');
+}
+
 // 'studentByStudentNumber' controller method to find a student by its studentNumber
 exports.studentByStudentNumber = function (req, res, next, studentNumber) {
 	// Use the 'Student' static 'findOne' method to retrieve a specific student

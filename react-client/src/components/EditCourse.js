@@ -9,7 +9,7 @@ import AppContext from './AppContext';
 
 function EditCourse(props) {
   const { editingItem, setRegisteredCourses } = props;
-  const { loginStudentId } = useContext(AppContext); 
+  const { loginStudentNumber } = useContext(AppContext); 
   const [courses, setCourses] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState(editingItem._id);
   const [showLoading, setShowLoading] = useState(true);
@@ -31,7 +31,7 @@ function EditCourse(props) {
   const updateCourse = (e) => {
     setShowLoading(true);
     e.preventDefault();
-    axios.put(`/update/${loginStudentId}/${editingItem.courseCode}`, {"newCourseId": selectedCourse})
+    axios.put(`/update/${loginStudentNumber}/${editingItem.courseCode}`, {"newCourseId": selectedCourse})
       .then((result) => {
         console.log('after calling put to update', result.data);
         setShowLoading(false);
@@ -47,26 +47,27 @@ function EditCourse(props) {
   }
 
   return (
-    <div>
+    <div class="text-center">
       {showLoading && 
         <Spinner animation="border" role="status">
           <span className="sr-only">Loading...</span>
         </Spinner> 
       }
-      <table striped bordered hover>
+      <h1 class="mt-3">Edit Course</h1>
+      <table class="table table-striped center text-center bordered hover mt-3">
         <tbody>
             <tr>
-                <td>Course Code</td>
+                <th>Course Code</th>
                 <td>{editingItem.courseCode}</td>
             </tr>
             <tr>
-                <td>Course Name</td>
+                <th>Course Name</th>
                 <td>{editingItem.courseName}</td>
             </tr>
             <tr>
-                <td>Section</td>
+                <th>Section</th>
                 <td>
-                    <select name="section" id="section" value={selectedCourse} onChange={onChange}>
+                    <select class="form-control" name="section" id="section" value={selectedCourse} onChange={onChange}>
                         {courses.map((item, idx) => (
                             <option value={item._id} >{item.section}</option>
                         ))}
@@ -75,7 +76,7 @@ function EditCourse(props) {
             </tr>
         </tbody>
         </table>
-        <button onClick={updateCourse}>Change Section</button>
+        <button class="btn btn-primary" onClick={updateCourse}>Change Section</button>
     </div>
   );
 }

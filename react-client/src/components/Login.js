@@ -1,84 +1,86 @@
 import React, { useState, useEffect, useContext } from 'react';
-//import ReactDOM from 'react-dom';
-import Jumbotron from 'react-bootstrap/Jumbotron';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import AppContext from './AppContext';
-//
 
 function Login() {
-  const { loginStudentId, setLoginStudentId} = useContext(AppContext);
-  //state variable for the screen, admin or user
-  // const [screen, setScreen] = useState('auth');
-  //store input field data, user name and password
+  const { loginStudentNumber, setLoginStudentNumber } = useContext(AppContext);
   const [studentNumber, setStudentNumber] = useState("301040475");
   const [password, setPassword] = useState("123456789");
   const apiUrl = "http://localhost:3000/signin";
-  //send username and password to the server
-  // for initial authentication
-  const auth = async () => {
-    console.log('calling auth')
-    console.log(studentNumber)
-    try {
-      //make a get request to /authenticate end-point on the server
-      const loginData = { auth: { studentNumber, password } }
-      //call api
-      const res = await axios.post(apiUrl, loginData);
-      console.log(res.data.auth)
-      console.log(res.data.screen)
-      //process the response
-      if (res.data.screen !== undefined) {
-        // setScreen(res.data.screen);
-        setLoginStudentId(res.data.screen);
-        console.log(res.data.screen);
-      }
-    } catch (e) { //print the error
-      console.log(e);
-    }
   
-  };
+  //runs the first time the view is rendered to check if user is signed in
+  useEffect(() => {
+    readCookie();
+  }, []);
   
   //check if the user already logged-in
   const readCookie = async () => {
     try {
       console.log('--- in readCookie function ---');
-
-      //
-    //   const res = await axios.get('/read_cookie');
-    //   // 
-    //   if (res.data.screen !== undefined) {
-    //     setScreen(res.data.screen);
-    //     console.log(res.data.screen)
-    //   }
+      const res = await axios.get('/read_cookie');
+      
+      if (res.data.screen !== undefined) {
+        setLoginStudentNumber(res.data.screen);
+        console.log(res.data.screen);
+      }
     } catch (e) {
-      // setLoginStudentId('auth');
       console.log(e);
+      setLoginStudentNumber("auth");
     }
   };
-  //runs the first time the view is rendered
-  //to check if user is signed in
-  useEffect(() => {
-    readCookie();
-  }, []); //only the first render
-  //
+
+  const auth = async () => {
+    console.log(studentNumber);
+    try {
+      const loginData = { auth: { studentNumber, password } }
+      const res = await axios.post(apiUrl, loginData);
+      console.log(res.data.auth);
+      console.log(res.data.screen);
+      //process the response
+      if (res.data.screen !== undefined) {
+        console.log(res.data.screen);
+        setStudentNumber(res.data.screen);
+        setLoginStudentNumber(res.data.screen);
+      }
+    } catch (e) {
+      console.log(e);
+      setStudentNumber("auth");
+      setLoginStudentNumber("auth");
+    }
+  };
+  
   return (
     <div className="App">
-      {loginStudentId === 'auth' 
+      {loginStudentNumber === "auth" 
         ? <div>
-          <label>Student Number: </label>
-          <br/>
-          <input type="text" onChange={e => setStudentNumber(e.target.value)} />
-          <br/>
-          <label>Password: </label>
-          <br/>
-          <input type="password" onChange={e => setPassword(e.target.value)} />
-          <br/>
-          <button onClick={auth}>Login</button>
-        </div>
-        : <>
-            {loginStudentId}
-        </>
+            <table class="text-right mr-auto ml-auto needs-validation mt-5">
+              <tr>
+                <td><label for="studentNumber">Student Number:</label></td>
+                <td>
+                  <input class="form-control"
+                          placeholder="Enter your student number"
+                          name="studentNumber"
+                          required onChange={e => setStudentNumber(e.target.value)} />
+                </td>
+              </tr>
+              <tr>
+                <td><label for="password">Password:</label></td>
+                <td>
+                  <input class="form-control"
+                          type="password"
+                          size="30"
+                          placeholder="Enter your password"
+                          name="password"
+                          required onChange={e => setPassword(e.target.value)} />
+                </td>
+              </tr>
+            </table>
+            <button class="btn btn-primary mt-3" onClick={auth}>Login</button>
+          </div>
+        : <div class="mt-5">
+            <h1>Welcome to Registration System</h1>
+            <p>You can start registering your courses</p>
+          </div>
       }
     </div>
   );

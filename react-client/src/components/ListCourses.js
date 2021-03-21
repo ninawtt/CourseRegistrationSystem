@@ -1,14 +1,13 @@
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
-import ListGroup from 'react-bootstrap/ListGroup';
 import Spinner from 'react-bootstrap/Spinner';
 import { withRouter } from 'react-router-dom';
 import Login from './Login';
 import AppContext from './AppContext';
 
 function ListCourses(props) {
-  const { loginStudentId } = useContext(AppContext); 
-  const [data, setData] = useState([]);
+  const { loginStudentNumber } = useContext(AppContext); 
+  const [courses, setCourses] = useState([]);
   const [showLoading, setShowLoading] = useState(true);
 
   useEffect(() => {
@@ -18,13 +17,13 @@ function ListCourses(props) {
           const allCourses = result.data;
           console.log('data in if:', allCourses )
 
-          axios.get(`/student/${loginStudentId}/courses`).then(
+          axios.get(`/student/${loginStudentNumber}/courses`).then(
             res => {
               const selectedCourses = res.data;
               allCourses.forEach((c,index)=>{
                 allCourses[index].selected = selectedCourses.find(s=>s._id == c._id) ? true : false;
               });
-              setData(allCourses);
+              setCourses(allCourses);
               setShowLoading(false);
               console.log("allCourses", allCourses);
             }
@@ -37,13 +36,13 @@ function ListCourses(props) {
   }, []);
 
   const toggleCourse = (idx, item) => {
-    const updatedData = [...data];
+    const updatedData = [...courses];
     updatedData[idx].selected = !item.selected;
-    setData(updatedData);
+    setCourses(updatedData);
   };
 
   const registerCourses = () => {
-    axios.put(`/register/${loginStudentId}`,{courses:data.filter(i=>i.selected).map(i=>i._id)})
+    axios.put(`/register/${loginStudentNumber}`,{courses: courses.filter(i=>i.selected).map(i=>i._id)})
         .then(result => {
           console.log('registered successfully', result.data )
           props.history.push({
@@ -62,12 +61,13 @@ function ListCourses(props) {
 
   return (
     <div>
-      { data.length !== 0
-        ? <div>
+      { courses.length !== 0
+        ? <div class="text-center">
           {showLoading && <Spinner animation="border" role="status">
             <span className="sr-only">Loading...</span>
           </Spinner> }
-          <table striped bordered hover>
+          <h1 class="mt-3">All Courses</h1>
+          <table class="table table-striped center text-center bordered hover mt-3">
             <thead>
               <tr>
                 <th>Register</th>
@@ -79,19 +79,19 @@ function ListCourses(props) {
               </tr>
             </thead>
             <tbody>
-            {data.map((item, idx) => (
+            {courses.map((item, idx) => (
               <tr key={`tr_${item._id}`}>
                 <td><input type="checkbox" onClick={() => toggleCourse(idx, item)} value="" id={item._id} defaultChecked={item.selected} /></td>
                 <td>{item.courseCode}</td>
                 <td>{item.courseName}</td>
                 <td>{item.section}</td>
                 <td>{item.semester}</td>
-                <td><button onClick={() => showCourseDetail(item._id)}>View Details</button></td>
+                <td><button class="btn btn-info" onClick={() => showCourseDetail(item._id)}>View Details</button></td>
               </tr>
             ))}
             </tbody>
           </table>
-          <button onClick={registerCourses}> Register</button>
+          <button class="btn btn-primary" onClick={registerCourses}> Register</button>
         </div>
         : < Login />
       }

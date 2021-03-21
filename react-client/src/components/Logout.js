@@ -5,19 +5,29 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import AppContext from './AppContext';
+import Login from './Login';
+import { toast } from 'react-toastify';
 //
 
 function Logout() {
-  const { loginStudentId, setLoginStudentId } = useContext(AppContext);
+  const { loginStudentNumber, setLoginStudentNumber } = useContext(AppContext);
 
   useEffect(() => {
-    setLoginStudentId("auth");
+    const deleteCookie = async () => {
+      try {
+        await axios.get('/signout');
+        setLoginStudentNumber("auth");
+        toast.dark("Logout successfully!");
+      } catch (e) {
+        console.log(e);
+      }
+    };
+
+    deleteCookie();
   }, []);
   
   return (
-    <div>
-      <p>Logout successfully</p>
-    </div>
+    <Login />
   );
 }
 
