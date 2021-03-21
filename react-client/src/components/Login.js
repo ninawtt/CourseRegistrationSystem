@@ -12,8 +12,8 @@ function Login() {
   //state variable for the screen, admin or user
   // const [screen, setScreen] = useState('auth');
   //store input field data, user name and password
-  const [studentNumber, setStudentNumber] = useState();
-  const [password, setPassword] = useState();
+  const [studentNumber, setStudentNumber] = useState("301040475");
+  const [password, setPassword] = useState("123456789");
   const apiUrl = "http://localhost:3000/signin";
   //send username and password to the server
   // for initial authentication

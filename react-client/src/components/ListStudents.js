@@ -26,15 +26,18 @@ function ListStudents(props) {
   }, []);
 
   const showStudentDetail = (studentNumber) => {
-    setShowLoading(true);
-    axios.get(`/student/${studentNumber}`)
-        .then(result => {
-          console.log('student:', result.data);
-          setShowLoading(false);
-        }).catch((error) => {
-          console.log('error in fetchData:', error);
-          setShowLoading(false);
+    props.history.push({
+        pathname: '/showStudent/' + studentNumber
     });
+    // setShowLoading(true);
+    // axios.get(`/student/${studentNumber}`)
+    //     .then(result => {
+    //       console.log('student:', result.data);
+    //       setShowLoading(false);
+    //     }).catch((error) => {
+    //       console.log('error in fetchData:', error);
+    //       setShowLoading(false);
+    // });
   }
 
   return (
@@ -51,7 +54,7 @@ function ListStudents(props) {
                 <th>First Name</th>
                 <th>Last Name</th>
                 <th>Program</th>
-                <th>View Details</th>
+                <th>Action</th>
               </tr>
             </thead>
             <tbody>

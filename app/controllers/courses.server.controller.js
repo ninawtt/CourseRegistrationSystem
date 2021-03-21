@@ -186,15 +186,29 @@ exports.courseByID = function (req, res, next, id) {
   );
 };
 
+exports.coursesByCode = function (req, res, next) {
+  Course.find({courseCode: req.params.courseCode,}, (err, courses) => {
+    if (err) {
+      // Call the next middleware with an error message
+      return res.status(400).send({
+        message: getErrorMessage(err),
+      });
+    } else {
+      // Use the 'response' object to send a JSON response
+      res.status(200).json(courses);
+    }
+  });
+};
+
 exports.studentsList = function (req, res) {
-  Student.find({ courses: req.course._id }, (err, student) => {
+  Student.find({ courses: req.course._id }, (err, students) => {
     if (err) {
       return res.status(400).send({
         message: getErrorMessage(err),
       });
     } else {
-      console.log('studentsList: ', student);
-      res.status(200).json(student);
+      console.log('studentsList: ', students);
+      res.status(200).json({students, course: req.course});
     }
   });
 };

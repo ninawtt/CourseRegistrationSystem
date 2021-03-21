@@ -19,6 +19,9 @@ import 'react-toastify/dist/ReactToastify.css';
 import ListCourses from './components/ListCourses';
 import MyCourses from './components/MyCourses';
 import ListStudents from './components/ListStudents';
+import ShowStudent from './components/ShowStudent';
+import ShowCourse from './components/ShowCourse';
+import Logout from './components/Logout';
 //
 function App() {
   const [loginStudentId, setLoginStudentId] = useState("auth");
@@ -35,7 +38,7 @@ function App() {
               { loginStudentId !== "auth" && <>
                 <Link to="/courses">Courses</Link>
                 <Link to="/students">Students</Link>
-                <Link to="/myCourses">My Courses</Link>
+                <Link to="/myCourses/list">My Courses</Link>
                 <Link to="/logout">Logout</Link>
               </>}
               { loginStudentId === "auth" && 
@@ -51,9 +54,11 @@ function App() {
             <Route render ={()=> <Login />} path="/login" />
             <Route render ={()=> <SignUp />} path="/create" />
             <Route render ={()=> <ListCourses />} path="/courses" />
+            <Route render ={()=> <ShowCourse />} path="/showCourse/:courseId" />
             <Route render ={()=> <ListStudents />} path="/students" />
-            <Route render ={()=> <div><MyCourses /></div>} path="/myCourses" />
-            <Route render ={()=> <div>Logout</div>} path="/logout" />
+            <Route render ={()=> <ShowStudent />} path="/showStudent/:studentNumber" />
+            <Route render ={()=> <MyCourses />} path="/myCourses" />
+            <Route render ={()=> <Logout />} path="/logout" />
         </div>
       </Router>
     </AppContext.Provider>
