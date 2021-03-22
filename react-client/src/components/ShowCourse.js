@@ -12,8 +12,7 @@ function ShowCourse(props) {
   const apiUrl = `http://localhost:3000/courses/${props.match.params.courseId}/students`;
 
   useEffect(() => {
-      console.log(apiUrl);
-    setShowLoading(false);
+    setShowLoading(true);
     axios.get(apiUrl)
         .then(result => {
           console.log('data in if:', result.data )
@@ -24,14 +23,6 @@ function ShowCourse(props) {
           console.log('error in fetchData:', error);
           setShowLoading(false);
     });
-    // const fetchData = async () => {
-    //   const result = await axios(apiUrl);
-    //   setCourse(result.data.course);
-    //   setStudents(result.data.students); // data is the default key for response body
-    //   setShowLoading(false);
-    // };
-
-    // fetchData();
   }, []);
 
 //   const editUser = (id) => {
@@ -56,30 +47,41 @@ function ShowCourse(props) {
     <div>
       {showLoading && <Spinner animation="border" role="status">
         <span className="sr-only">Loading...</span>
-      </Spinner> }    
-      <Jumbotron>
-        <h1>{course.courseCode} {course.courseName}</h1>
-        <table striped bordered hover>
-            <thead>
-              <tr>
-                <th>Student Number</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Program</th>
-              </tr>
-            </thead>
-            <tbody>
-            {students.map((item, idx) => (
-              <tr key={`tr_${item._id}`}>
-                <td>{item.studentNumber}</td>
-                <td>{item.firstName}</td>
-                <td>{item.lastName}</td>
-                <td>{item.program}</td>
-              </tr>
-            ))}
-            </tbody>
-          </table>
-      </Jumbotron>
+      </Spinner> }
+      <div class="text-center">
+        <h1 class="mt-3">Course Detail - {course.courseCode} {course.courseName}</h1>
+        <table class="table table-striped center text-center bordered hover mt-3">
+          <tbody>
+            <tr>
+              <th>Course Code</th>
+              <td>{course.courseCode}</td>
+            </tr>
+            <tr>
+              <th>Course Name</th>
+              <td>{course.courseName}</td>
+            </tr>
+            <tr>
+              <th>Section</th>
+              <td>{course.section}</td>
+            </tr>
+            <tr>
+              <th>Semester</th>
+              <td>{course.semester}</td>
+            </tr>
+            <tr>
+              <th>Registered Students</th>
+              <td>
+                {students.length > 0 ? 
+                  <ul style={{listStyleType: "none"}}>
+                    {students.map((item, idx) => (
+                      <li key={`tr_${item._id}`}>{item.studentNumber} {item.firstName} {item.lastName} {item.program}</li>
+                    ))}
+                  </ul> : "No Student enrolled"}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

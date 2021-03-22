@@ -7,7 +7,6 @@ import axios from 'axios';
 import AppContext from './AppContext';
 import Login from './Login';
 import { toast } from 'react-toastify';
-//
 
 function Logout() {
   const { loginStudentNumber, setLoginStudentNumber } = useContext(AppContext);

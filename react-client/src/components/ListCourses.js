@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import Spinner from 'react-bootstrap/Spinner';
 import { withRouter } from 'react-router-dom';
-import Login from './Login';
 import AppContext from './AppContext';
 
 function ListCourses(props) {
@@ -27,7 +26,6 @@ function ListCourses(props) {
               setShowLoading(false);
               console.log("allCourses", allCourses);
             }
-          
           );
         }).catch((error) => {
           console.log('error in fetchData:', error);
@@ -59,13 +57,16 @@ function ListCourses(props) {
     });
   }
 
+  if(showLoading) {
+    return <Spinner animation="border" role="status">
+      <span className="sr-only">Loading...</span>
+    </Spinner>
+  }
+  
   return (
     <div>
       { courses.length !== 0
         ? <div class="text-center">
-          {showLoading && <Spinner animation="border" role="status">
-            <span className="sr-only">Loading...</span>
-          </Spinner> }
           <h1 class="mt-3">All Courses</h1>
           <table class="table table-striped center text-center bordered hover mt-3">
             <thead>
@@ -93,7 +94,9 @@ function ListCourses(props) {
           </table>
           <button class="btn btn-primary" onClick={registerCourses}> Register</button>
         </div>
-        : < Login />
+        : <div>
+          NO DATA
+        </div>
       }
     </div>
 

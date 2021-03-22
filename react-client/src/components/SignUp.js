@@ -1,22 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Spinner from 'react-bootstrap/Spinner';
-import Jumbotron from 'react-bootstrap/Jumbotron';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
 import { withRouter } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 function SignUp(props) {
-  const [user, setUser] = useState({ studentNumber: '', password: '', firstName: '', 
+  const [student, setStudent] = useState({ studentNumber: '', password: '', firstName: '', 
         lastName: '', address: '', city: '', phoneNumber: '',  email: '', program: '' });
   const [showLoading, setShowLoading] = useState(false);
   const apiUrl = "http://localhost:3000/student";
 
-  const saveUser = (e) => {
+  const saveStudent = (e) => {
     setShowLoading(true);
     e.preventDefault();
-    const data = { ...user };
+    const data = { ...student };
     axios.post(apiUrl, data)
       .then((res) => {
         setShowLoading(false);
@@ -27,60 +24,143 @@ function SignUp(props) {
 
   const onChange = (e) => {
     e.persist(); // The persisted property returns a Boolean value that indicates if the webpage is loaded directly from the server, or if the page is cached.
-    setUser({...user, [e.target.name]: e.target.value});
+    setStudent({...student, [e.target.name]: e.target.value});
   }
 
   return (
-    <div>
+    <div class="text-center">
       {showLoading && 
         <Spinner animation="border" role="status">
           <span className="sr-only">Loading...</span>
         </Spinner> 
-      } 
-      <Jumbotron>
-        <Form onSubmit={saveUser}>
-        <Form.Group>
-          <Form.Label>Student Number</Form.Label>
-            <Form.Control type="text" name="studentNumber" id="studentNumber" placeholder="Enter student number" value={user.studentNumber} onChange={onChange} />
-          </Form.Group>
-          <Form.Group>
-            <Form.Label>First Name</Form.Label>
-            <Form.Control type="text" name="firstName" id="firstName" placeholder="Enter first name" value={user.firstName} onChange={onChange} />
-          </Form.Group>
-          <Form.Group>
-            <Form.Label>Last Name</Form.Label>
-            <Form.Control type="text" name="lastName" id="lastName" placeholder="Enter last name" value={user.lastName} onChange={onChange} />
-          </Form.Group>
-          <Form.Group>
-            <Form.Label>Address</Form.Label>
-            <Form.Control type="text" name="address" id="address" placeholder="Enter address" value={user.address} onChange={onChange} />
-          </Form.Group>
-          <Form.Group>
-            <Form.Label>City</Form.Label>
-            <Form.Control type="text" name="city" id="city" placeholder="Enter city" value={user.city} onChange={onChange} />
-          </Form.Group>
-          <Form.Group>
-            <Form.Label>Email</Form.Label>
-            <Form.Control type="text" name="email" id="email" rows="3" placeholder="Enter email" value={user.email} onChange={onChange} />
-          </Form.Group>
-          <Form.Group>
-            <Form.Label>Phone Number</Form.Label>
-            <Form.Control type="text" name="phoneNumber" id="phoneNumber" placeholder="Enter phone number" value={user.phoneNumber} onChange={onChange} />
-          </Form.Group>
-          <Form.Group>
-            <Form.Label>Program</Form.Label>
-            <Form.Control type="text" name="program" id="program" placeholder="Enter program" value={user.program} onChange={onChange} />
-          </Form.Group>
-          <Form.Group>
-            <Form.Label>Password</Form.Label>
-            <Form.Control type="text" name="password" id="password" placeholder="Enter password" value={user.password} onChange={onChange} />
-          </Form.Group>
-          
-          <Button variant="primary" type="submit">
-            Save
-          </Button>
-        </Form>
-      </Jumbotron>
+      }
+      <h1 class="mt-3">Sign Up</h1>
+        <table class="text-right mr-auto ml-auto needs-validation mt-3">
+          <tr>
+            <td><label for="studentNumber">Student Number:</label></td>
+            <td>
+              <input
+                class="form-control"
+                type="text"
+                size="30"
+                placeholder="Enter your student number"
+                name="studentNumber"
+                required
+                value={student.studentNumber} onChange={onChange}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td><label for="firstName">First Name:</label></td>
+            <td>
+              <input
+                class="form-control"
+                type="text"
+                size="30"
+                placeholder="Enter your first name"
+                name="firstName"
+                required
+                value={student.firstName} onChange={onChange}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td><label for="lastName">Last Name:</label></td>
+            <td>
+              <input
+                class="form-control"
+                type="text"
+                size="30"
+                placeholder="Enter your last name"
+                name="lastName"
+                required
+                value={student.lastName} onChange={onChange}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td><label for="address">Address:</label></td>
+            <td>
+              <input
+                class="form-control"
+                type="text"
+                size="30"
+                placeholder="Enter your address"
+                name="address"
+                required
+                value={student.address} onChange={onChange}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td><label for="city">City:</label></td>
+            <td>
+              <input
+                class="form-control"
+                type="text"
+                size="30"
+                placeholder="Enter your city"
+                name="city"
+                required
+                value={student.city} onChange={onChange}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td><label for="email">Email:</label></td>
+            <td>
+              <input
+                class="form-control"
+                type="email"
+                placeholder="Enter your email"
+                name="email"
+                required
+                value={student.email} onChange={onChange}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td><label for="phoneNumber">Phone Number:</label></td>
+            <td>
+              <input
+                class="form-control"
+                type="phoneNumber"
+                placeholder="Enter your phone number"
+                name="phoneNumber"
+                required
+                value={student.phoneNumber} onChange={onChange}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td><label for="program">Program:</label></td>
+            <td>
+              <input
+                class="form-control"
+                type="program"
+                placeholder="Enter your program"
+                name="program"
+                required
+                value={student.program} onChange={onChange}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td><label for="password">Password:</label></td>
+            <td>
+              <input
+                class="form-control"
+                type="password"
+                size="30"
+                placeholder="Enter your password"
+                name="password"
+                required
+                value={student.password} onChange={onChange}
+              />
+            </td>
+          </tr>
+        </table>
+        <button class="btn btn-primary" onClick={saveStudent}>Sign Up</button>
     </div>
   );
 }

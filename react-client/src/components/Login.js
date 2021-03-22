@@ -50,10 +50,11 @@ function Login() {
   };
   
   return (
-    <div className="App">
+    <div class="text-center">
       {loginStudentNumber === "auth" 
-        ? <div>
-            <table class="text-right mr-auto ml-auto needs-validation mt-5">
+        ? <>
+            <h1 class="mt-3">Login</h1>
+            <table class="text-right mr-auto ml-auto needs-validation mt-3">
               <tr>
                 <td><label for="studentNumber">Student Number:</label></td>
                 <td>
@@ -76,7 +77,7 @@ function Login() {
               </tr>
             </table>
             <button class="btn btn-primary mt-3" onClick={auth}>Login</button>
-          </div>
+          </>
         : <div class="mt-5">
             <h1>Welcome to Registration System</h1>
             <p>You can start registering your courses</p>

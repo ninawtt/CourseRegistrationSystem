@@ -3,7 +3,6 @@ import {Route, Switch, useRouteMatch} from "react-router-dom";
 import axios from 'axios';
 import Spinner from 'react-bootstrap/Spinner';
 import { withRouter } from 'react-router-dom';
-import Login from './Login';
 import AppContext from './AppContext';
 import EditCourse from './EditCourse';
 
@@ -34,13 +33,14 @@ function MyCoursesList({updateRegisteredCourses, dropCourse, editCourse, registe
                     <button class="btn btn-warning mr-3" onClick={() => editCourse(item)}>Edit</button>
                     <button class="btn btn-danger" onClick={() => dropCourse(item._id)}>Drop</button>
                   </td>
-                  {/* <td></td> */}
                 </tr>
               ))}
               </tbody>
             </table>
           </div>
-        : < Login />
+        : <div>
+        NO DATA
+      </div>
       }    
     </div>
   );
@@ -97,12 +97,14 @@ function MyCourses(props) {
     });
   }
 
+  if(showLoading) {
+    return <Spinner animation="border" role="status">
+      <span className="sr-only">Loading...</span>
+    </Spinner>
+  }
 
   return (
     <>
-      {showLoading && <Spinner animation="border" role="status">
-        <span className="sr-only">Loading...</span>
-      </Spinner> }
       <Switch>
         <Route render ={()=> <MyCoursesList 
         updateRegisteredCourses={updateRegisteredCourses}
@@ -113,8 +115,7 @@ function MyCourses(props) {
         <Route render ={()=> <EditCourse editingItem={editingItem} setRegisteredCourses={setRegisteredCourses}/>} path={`${url}/editCourse/:courseCode`} />
       </Switch>
     </>
-
   );
 }
-//
+
 export default withRouter(MyCourses);
