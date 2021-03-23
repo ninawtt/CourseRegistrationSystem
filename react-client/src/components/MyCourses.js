@@ -5,46 +5,7 @@ import Spinner from 'react-bootstrap/Spinner';
 import { withRouter } from 'react-router-dom';
 import AppContext from './AppContext';
 import EditCourse from './EditCourse';
-
-function MyCoursesList({updateRegisteredCourses, dropCourse, editCourse, registeredCourses}) {
-  return (
-    <div>
-      { registeredCourses && registeredCourses.length !== 0
-        ? <div class="text-center">
-            <h1 class="mt-3">My Courses</h1>
-            <table class="table table-striped center text-center bordered hover mt-3">
-              <thead>
-                <tr class="text-center">
-                  <th>Course Code</th>
-                  <th>Course Name</th>
-                  <th>Section</th>
-                  <th>Semester</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-              {registeredCourses.map((item, idx) => (
-                <tr key={`tr_${item._id}`}>
-                  <td>{item.courseCode}</td>
-                  <td>{item.courseName}</td>
-                  <td>{item.section}</td>
-                  <td>{item.semester}</td>
-                  <td>
-                    <button class="btn btn-warning mr-3" onClick={() => editCourse(item)}>Edit</button>
-                    <button class="btn btn-danger" onClick={() => dropCourse(item._id)}>Drop</button>
-                  </td>
-                </tr>
-              ))}
-              </tbody>
-            </table>
-          </div>
-        : <div>
-        NO DATA
-      </div>
-      }    
-    </div>
-  );
-}
+import { toast } from 'react-toastify';
 
 function MyCourses(props) {
   let { url } = useRouteMatch();
@@ -85,6 +46,7 @@ function MyCourses(props) {
         .then(result => {
           console.log('drop successfully', result.data);
           updateRegisteredCourses(id);
+          toast.dark(`Course has been dropped successfully!`);
         }).catch((error) => {
           console.log('error in fetchData:', error);
     });
@@ -102,6 +64,46 @@ function MyCourses(props) {
       <span className="sr-only">Loading...</span>
     </Spinner>
   }
+
+  function MyCoursesList({updateRegisteredCourses, dropCourse, editCourse, registeredCourses}) {
+    return (
+      <div>
+        { registeredCourses && registeredCourses.length !== 0
+          ? <div class="text-center">
+              <h1 class="mt-3">My Courses</h1>
+              <table class="table table-striped center text-center bordered hover mt-3">
+                <thead>
+                  <tr class="text-center">
+                    <th>Course Code</th>
+                    <th>Course Name</th>
+                    <th>Section</th>
+                    <th>Semester</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                {registeredCourses.map((item, idx) => (
+                  <tr key={`tr_${item._id}`}>
+                    <td>{item.courseCode}</td>
+                    <td>{item.courseName}</td>
+                    <td>{item.section}</td>
+                    <td>{item.semester}</td>
+                    <td>
+                      <button class="btn btn-warning mr-3" onClick={() => editCourse(item)}>Edit</button>
+                      <button class="btn btn-danger" onClick={() => dropCourse(item._id)}>Drop</button>
+                    </td>
+                  </tr>
+                ))}
+                </tbody>
+              </table>
+            </div>
+          : <div class="text-center">
+              <h1 class="mt-3">No Courses Registered</h1>
+            </div>
+        }    
+      </div>
+    );
+  }  
 
   return (
     <>

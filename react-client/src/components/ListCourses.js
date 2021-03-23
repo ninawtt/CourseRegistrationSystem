@@ -3,6 +3,7 @@ import axios from 'axios';
 import Spinner from 'react-bootstrap/Spinner';
 import { withRouter } from 'react-router-dom';
 import AppContext from './AppContext';
+import { toast } from 'react-toastify';
 
 function ListCourses(props) {
   const { loginStudentNumber } = useContext(AppContext); 
@@ -42,18 +43,38 @@ function ListCourses(props) {
   const registerCourses = () => {
     axios.put(`/register/${loginStudentNumber}`,{courses: courses.filter(i=>i.selected).map(i=>i._id)})
         .then(result => {
-          console.log('registered successfully', result.data )
+          console.log('registered successfully', result.data);
           props.history.push({
             pathname: '/myCourses/list'
           });
         }).catch((error) => {
-          console.log('error in fetchData:', error)
+          console.log('error in fetchData:', error);
+    });
+  }
+
+  const createCourse = () => {
+    props.history.push({
+      pathname: '/createCourse'
     });
   }
 
   const showCourseDetail = (courseId) => {
     props.history.push({
       pathname: '/showCourse/' + courseId
+    });
+  }
+
+  const deleteCourse = (courseId) => {
+    axios.delete(`/course/${courseId}`)
+        .then(result => {
+          console.log('delete successfully', result.data);
+          props.history.push({
+            pathname: '/courses'
+          });
+          setCourses(courses.filter(i=>i._id !== courseId));
+          toast.dark(`${result.data.courseCode} ${result.data.courseName} has been deleted successfully!`);
+        }).catch((error) => {
+          console.log('error in fetchData:', error);
     });
   }
 
@@ -87,16 +108,20 @@ function ListCourses(props) {
                 <td>{item.courseName}</td>
                 <td>{item.section}</td>
                 <td>{item.semester}</td>
-                <td><button class="btn btn-info" onClick={() => showCourseDetail(item._id)}>View Details</button></td>
+                <td>
+                  <button class="btn btn-info mr-3" onClick={() => showCourseDetail(item._id)}>View Details</button>
+                  <button class="btn btn-danger" onClick={() => deleteCourse(item._id)}>Delete Course</button>
+                </td>
               </tr>
             ))}
             </tbody>
           </table>
-          <button class="btn btn-primary" onClick={registerCourses}> Register</button>
+          <button class="btn btn-primary mr-3" onClick={registerCourses}> Register</button>
+          <button class="btn btn-warning" onClick={createCourse}> Create Course</button>
         </div>
-        : <div>
-          NO DATA
-        </div>
+        : <div class="text-center">
+            <h1 class="mt-3">No Courses Created</h1>
+          </div>
       }
     </div>
 

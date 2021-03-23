@@ -3,7 +3,7 @@ const Student = mongoose.model("Student");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const config = require("../../config/config");
-const jwtExpirySeconds = 300;
+const jwtExpirySeconds = 1000;
 const jwtKey = config.secretKey;
 
 // Create a new error handling controller method
@@ -44,6 +44,21 @@ exports.create = function (req, res, next) {
   student.save(function (err) {
     if (err) {
       // Call the next middleware with an error message
+      return res.status(400).send({
+        message: getErrorMessage(err)
+      });
+    } else {
+      // Use the 'response' object to send a JSON response
+      res.status(200).json(student);
+    }
+  });
+};
+
+// Update a student by id
+exports.update = function(req, res, next) {
+  console.log(req.student);
+  Student.findByIdAndUpdate(req.student.id, req.body, { new: true }, function (err, student) {
+    if (err) {
       return res.status(400).send({
         message: getErrorMessage(err)
       });

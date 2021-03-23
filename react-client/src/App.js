@@ -24,7 +24,9 @@ import ShowStudent from './components/ShowStudent';
 import ShowCourse from './components/ShowCourse';
 import Logout from './components/Logout';
 import Home from './components/Home';
-//
+import AddCourse from './components/AddCourse';
+import EditStudent from './components/EditStudent';
+
 function App() {
   const [loginStudentNumber, setLoginStudentNumber] = useState("auth");
 
@@ -53,10 +55,12 @@ function App() {
             <Route render ={()=> <Home />} path="/home" />
             <Route render ={()=> <Login />} path="/login" />
             <Route render ={()=> <SignUp />} path="/create" />
+            <Route render ={()=> <AddCourse />} path="/createCourse" />
             <Route render ={()=> <ListCourses />} path="/courses" />
             <Route render ={()=> <ShowCourse />} path="/showCourse/:courseId" />
             <Route render ={()=> <ListStudents />} path="/students" />
             <Route render ={()=> <ShowStudent />} path="/showStudent/:studentNumber" />
+            <Route render ={()=> <EditStudent />} path="/editStudent/:studentNumber" />
             <Route render ={()=> <MyCourses />} path="/myCourses" />
             <Route render ={()=> <Logout />} path="/logout" />
         </div>

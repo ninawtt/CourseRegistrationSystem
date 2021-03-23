@@ -4,8 +4,8 @@ import AppContext from './AppContext';
 
 function Login() {
   const { loginStudentNumber, setLoginStudentNumber } = useContext(AppContext);
-  const [studentNumber, setStudentNumber] = useState("301040475");
-  const [password, setPassword] = useState("123456789");
+  const [studentNumber, setStudentNumber] = useState();
+  const [password, setPassword] = useState();
   const apiUrl = "http://localhost:3000/signin";
   
   //runs the first time the view is rendered to check if user is signed in
@@ -80,7 +80,7 @@ function Login() {
           </>
         : <div class="mt-5">
             <h1>Welcome to Registration System</h1>
-            <p>You can start registering your courses</p>
+            <p>You can start registering your courses.</p>
           </div>
       }
     </div>

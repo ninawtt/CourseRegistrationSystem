@@ -12,7 +12,10 @@ module.exports = function(app) {
     app.post('/student', students.create);
     app.get('/students', students.requiresLogin, students.list);
 
-    app.get('/student/:studentNumber', students.requiresLogin, students.read);
+    app.route('/student/:studentNumber')
+        .get(students.requiresLogin, students.read)
+        .put(students.requiresLogin, students.update);
+
     app.get('/student/:studentNumber/courses', students.requiresLogin, students.coursesList);
 
     app.put('/register/:studentNumber', students.requiresLogin, courses.register);

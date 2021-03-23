@@ -1,11 +1,9 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Spinner from 'react-bootstrap/Spinner';
 import { withRouter } from 'react-router-dom';
-import AppContext from './AppContext';
 
 function ListStudents(props) {
-  const { loginStudentNumber } = useContext(AppContext); 
   const [allStudents, setAllStudents] = useState([]);
   const [showLoading, setShowLoading] = useState(true);
 
@@ -63,9 +61,9 @@ function ListStudents(props) {
               </tbody>
             </table>
           </div>
-        : <div>
-        NO DATA
-      </div>
+        : <div class="text-center">
+            <h1 class="mt-3">No Student Signed Up</h1>
+          </div>
       }
     </div>
   );

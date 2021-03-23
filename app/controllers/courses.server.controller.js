@@ -212,3 +212,16 @@ exports.studentsList = function (req, res) {
     }
   });
 };
+
+exports.deleteCourse = function (req, res) {
+  const course = req.course;
+  course.remove((err) => {
+      if (err) {
+          return res.status(400).send({
+              message: getErrorMessage(err)
+          });
+      } else {
+          res.status(200).json(course);
+      }
+  });
+};
