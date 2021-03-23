@@ -50,15 +50,6 @@ exports.register = function (req, res, next) {
   console.log("in register:", req.body);
 
   const courses = req.body.courses;
-
-  // TODO: is it necessary to convert strings to ObjectId?
-  // var coursesObjectIds = [];
-  // courses.forEach((course) => {
-  //   coursesObjectIds.push(mongoose.Types.ObjectId(course));
-  // });
-
-  // console.log("coursesObjectIds: ", coursesObjectIds);
-
   const student = req.student;
   student.courses = courses;
 
@@ -91,7 +82,6 @@ exports.updateCourse = async function (req, res, next) {
     var courseToBeReplaced = "";
 
     courses.forEach(async (cid) => {
-        // const course = courseByID(req, res, next, c);
         const foundCourse = await Course.findOne(
           {
             _id: cid,

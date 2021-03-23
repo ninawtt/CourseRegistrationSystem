@@ -141,9 +141,6 @@ exports.authenticate = function(req, res, next) {
 				// here, the max age is in milliseconds
 				res.cookie('token', token, { maxAge: jwtExpirySeconds * 1000,httpOnly: true});
 				res.status(200).send({ screen: student.studentNumber });
-				//
-				//res.json({status:"success", message: "user found!!!", data:{user:
-				//user, token:token}});
 				
 				req.student = student;
 				//call the next middleware
@@ -192,8 +189,6 @@ exports.isSignedIn = (req, res) => {
 exports.signout = (req, res) => {
 	res.clearCookie("token")
 	return res.status('200').json({message: "signed out"})
-	// Redirect the user back to the main application page
-	//res.redirect('/');
 }
 
 // 'studentByStudentNumber' controller method to find a student by its studentNumber
